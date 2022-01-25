@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs');
 const authenticate = require('../middleware/authenticate');
 const jwt = require('jsonwebtoken');
 
-
 // POST /api/users/register
 // Creates a new user
 // Expected body: { email, name, password }
