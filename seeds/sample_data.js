@@ -2,6 +2,7 @@
 const usersData = require('./seed_data/users');
 const tripsData = require('./seed_data/trips');
 const reviewsData = require('./seed_data/reviews');
+const candidatesData = require('./seed_data/candidates');
 
 exports.seed = function (knex) {
   return knex('users')
@@ -20,5 +21,11 @@ exports.seed = function (knex) {
     })
     .then(() => {
       return knex('reviews').insert(reviewsData);
+    })
+    .then(() => {
+      return knex('candidates').del();
+    })
+    .then(() => {
+      return knex('candidates').insert(candidatesData);
     });
 };

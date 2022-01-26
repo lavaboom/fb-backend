@@ -27,3 +27,17 @@ router.post('/add', (req, res) => {
             res.status(400).send('Failed to add trip');
         });
 });
+
+// GET /api/trips/:id
+// Gets information about the trip
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.get('/trips/:id', authenticate, (req, res) => {
+    knex('trips')
+        .where({ id: req.params.id })
+        .first()
+        .then((trip) => {
+            res.json(trip);
+        });
+});
+
+module.exports = router;
