@@ -11,16 +11,15 @@ exports.up = function (knex) {
             .onUpdate('CASCADE')
             .onDelete('CASCADE');
         table
-            .integer('driver_id')
+            .integer('candidate_id')
             .unsigned()
             .notNullable()
             .references('id')
             .inTable('users')
             .onUpdate('CASCADE')
             .onDelete('CASCADE');
-
         table.integer('offer').notNullable();
-        table.string('status');
+        table.string('candidate_status');
     })
 };
 

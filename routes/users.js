@@ -84,14 +84,40 @@ router.get('/current', authenticate, (req, res) => {
         });
 });
 
-// GET /api/users/trips
+// GET /api/users/:id/trips
 // Gets information about the currently logged in user
 // Expects valid JWT authentication to run through the 'authenticate' middleware
-router.get('/trips', authenticate, (req, res) => {
+router.get('/:id/trips', authenticate, (req, res) => {
     knex('trips')
-        .where({ sender_id: req.user.id })
+        .where({ sender_id: req.params.id })
         .then((trips) => {
             res.json(trips);
+        });
+});
+
+// GET /api/users/:id/candidates
+// Gets all the candidates for active trips for this user
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.get('/:id/candidates', authenticate, (req, res) => {
+    knex('candidates')
+        .join('trips', 'trips.id', 'candidates.trip_id')
+        .where({ sender_id: req.params.id })
+        .then((candidates) => {
+            res.json(candidates);
+        });
+});
+
+// GET /api/users/:id/trips-with-candidates
+// Gets all the candidates for active trips for this user - ONLY CANDIDATE IDS
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.get('/:id/trips-with-candidates', authenticate, (req, res) => {
+    knex('candidates')
+        .join('trips', 'trips.id', 'candidates.trip_id')
+        .where({ sender_id: req.params.id })
+        .then((candidates) => {
+            let filtered = candidates.map(item => item.trip_id);
+            // get unique trip ids only
+            res.json([...new Set(filtered)]);
         });
 });
 
