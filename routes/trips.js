@@ -31,13 +31,30 @@ router.post('/add', (req, res) => {
 // GET /api/trips/:id
 // Gets information about the trip
 // Expects valid JWT authentication to run through the 'authenticate' middleware
-router.get('/trips/:id', authenticate, (req, res) => {
+router.get('/:id', authenticate, (req, res) => {
     knex('trips')
         .where({ id: req.params.id })
         .first()
         .then((trip) => {
             res.json(trip);
         });
+});
+
+// GET /api/trips/:id
+// Gets information about the trip
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.delete('/:id', authenticate, (req, res) => {
+    knex('trips')
+        .where({ id: req.params.id })
+        .del()
+        .then((tripID) => {
+            res.status(201).send(`Trip ${tripID} deleted`)
+        })
+    .catch(() => {
+        res.status(400).json({
+            message: `Error deleting trip ${ req.params.id }`
+        });
+    });
 });
 
 module.exports = router;

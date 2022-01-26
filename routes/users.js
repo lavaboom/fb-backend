@@ -101,7 +101,14 @@ router.get('/:id/trips', authenticate, (req, res) => {
 router.get('/:id/candidates', authenticate, (req, res) => {
     knex('candidates')
         .join('trips', 'trips.id', 'candidates.trip_id')
-        .where({ sender_id: req.params.id })
+        .where({ 
+            sender_id: req.params.id,
+            candidate_status: 'Pending'
+         })
+         .join('users', 'users.id', 'candidates.candidate_id')
+        .where({ 
+            sender_id: req.params.id,
+         })
         .then((candidates) => {
             res.json(candidates);
         });
@@ -113,7 +120,10 @@ router.get('/:id/candidates', authenticate, (req, res) => {
 router.get('/:id/trips-with-candidates', authenticate, (req, res) => {
     knex('candidates')
         .join('trips', 'trips.id', 'candidates.trip_id')
-        .where({ sender_id: req.params.id })
+        .where({ 
+            sender_id: req.params.id,
+            candidate_status: 'Pending'
+        })
         .then((candidates) => {
             let filtered = candidates.map(item => item.trip_id);
             // get unique trip ids only

@@ -29,4 +29,11 @@ module.exports = [
         user_type: "Kitchen",
         password: bcrypt.hashSync('123', 10)
     },
+    {
+        id: 5,
+        name: "Llama",
+        email: "llama@hotmail.ca",
+        user_type: "Driver",
+        password: bcrypt.hashSync('123', 10)
+    },
 ]
