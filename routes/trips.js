@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const authenticate = require('../middleware/authenticate');
 const jwt = require('jsonwebtoken');
 
-// POST /api/trips/register
+// POST /api/trips/add
 // Creates a new trip
 // Expected body: { email, name, password }
 router.post('/add', (req, res) => {
@@ -18,14 +18,18 @@ router.post('/add', (req, res) => {
         date_posted: new Date()
     };
 
-    knex('trips')
-        .insert(newTrip)
-        .then(() => {
-            res.status(201).send('Trip added');
-        })
-        .catch(() => {
-            res.status(400).send('Failed to add trip');
-        });
+    console.log(newTrip)
+
+    res.status(201).send('server received your requst')
+
+    // knex('trips')
+    //     .insert(newTrip)
+    //     .then(() => {
+    //         res.status(201).send('Trip added');
+    //     })
+    //     .catch(() => {
+    //         res.status(400).send('Failed to add trip');
+    //     });
 });
 
 // GET /api/trips/:id

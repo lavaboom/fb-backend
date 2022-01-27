@@ -9,6 +9,7 @@ module.exports = [
       job_date: new Date('December 17, 2022 03:24:00'),
       status: 'IN PROGRESS',
       payment_type: 'Paid by Sender',
+      note: 'Leave at door',
       payment_amount: 10,
     },
     {
@@ -20,6 +21,7 @@ module.exports = [
       job_date: new Date('December 12, 2022 03:24:00'),
       status: 'NEW',
       payment_type: 'Paid by Recipient',
+      note: 'Leave at door',
       payment_amount: 20,
     },
     {
@@ -32,6 +34,20 @@ module.exports = [
       job_date: new Date('November 30, 2022 03:24:00'),
       status: 'COMPLETED',
       payment_type: 'Paid by Sender',
+      note: 'Leave at door',
       payment_amount: 30,
+    },
+    {
+      id: 4,
+      sender_id: 6,
+      driver_id: 2,
+      origin: 'Windsor',
+      destination: 'Oshawa',
+      date_posted: new Date(),
+      job_date: new Date('January 25, 2022 06:15:00'),
+      status: 'NEW',
+      payment_type: 'Paid by Recipient',
+      note: 'Leave at door',
+      payment_amount: 72,
     },
 ];

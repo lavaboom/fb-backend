@@ -19,6 +19,7 @@ exports.up = function (knex) {
             .onDelete('CASCADE');
         table.string('origin').notNullable();
         table.string('destination').notNullable();
+        table.string('note').defaultTo('Leave at door');
         table.timestamp('date_posted').defaultTo(knex.fn.now());
         table.timestamp('job_date').notNullable();
         table.string('status').notNullable();
