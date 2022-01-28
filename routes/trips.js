@@ -7,29 +7,26 @@ const jwt = require('jsonwebtoken');
 
 // POST /api/trips/add
 // Creates a new trip
-// Expected body: { email, name, password }
+// Expected body: { sender_id, origin, destination, 
+//      job_date, payment_type, note, payment_amount }
 router.post('/add', (req, res) => {
-    const { sender_id, origin, destination, job_date, 
-        payment_type, payment_amount  } = req.body;
-
+    const { job_date } = req.body;
     // Create the new trip
     const newTrip = {
         ...req.body,
+        job_date: new Date(job_date),
+        status: 'IN PROGRESS',
         date_posted: new Date()
     };
 
-    console.log(newTrip)
-
-    res.status(201).send('server received your requst')
-
-    // knex('trips')
-    //     .insert(newTrip)
-    //     .then(() => {
-    //         res.status(201).send('Trip added');
-    //     })
-    //     .catch(() => {
-    //         res.status(400).send('Failed to add trip');
-    //     });
+    knex('trips')
+        .insert(newTrip)
+        .then(() => {
+            res.status(201).send('Trip added');
+        })
+        .catch(() => {
+            res.status(400).send('Failed to add trip');
+        });
 });
 
 // GET /api/trips/:id

@@ -90,6 +90,7 @@ router.get('/current', authenticate, (req, res) => {
 router.get('/:id/trips', authenticate, (req, res) => {
     knex('trips')
         .where({ sender_id: req.params.id })
+        .orderBy('date_posted', 'desc')
         .then((trips) => {
             res.json(trips);
         });
