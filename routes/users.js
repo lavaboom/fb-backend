@@ -85,7 +85,7 @@ router.get('/current', authenticate, (req, res) => {
 });
 
 // GET /api/users/:id/trips
-// Gets information about the currently logged in user
+// Gets all trips of the currently logged in user
 // Expects valid JWT authentication to run through the 'authenticate' middleware
 router.get('/:id/trips', authenticate, (req, res) => {
     knex('trips')

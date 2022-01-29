@@ -41,6 +41,19 @@ router.get('/:id', authenticate, (req, res) => {
         });
 });
 
+// PUT /api/trips/:id
+// Gets information about the trip
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.put('/:id', authenticate, (req, res) => {
+    knex('trips')
+        .where({ id: req.params.id })
+        .update(req.body)
+        .then((number_of_rows_updated) => {
+            res.json(number_of_rows_updated);
+        });
+});
+
+
 // GET /api/trips/:id
 // Gets information about the trip
 // Expects valid JWT authentication to run through the 'authenticate' middleware
