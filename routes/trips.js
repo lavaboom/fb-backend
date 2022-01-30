@@ -54,8 +54,8 @@ router.put('/:id', authenticate, (req, res) => {
 });
 
 
-// GET /api/trips/:id
-// Gets information about the trip
+// DELETE /api/trips/:id
+// Delete this trip
 // Expects valid JWT authentication to run through the 'authenticate' middleware
 router.delete('/:id', authenticate, (req, res) => {
     knex('trips')
@@ -67,6 +67,61 @@ router.delete('/:id', authenticate, (req, res) => {
     .catch(() => {
         res.status(400).json({
             message: `Error deleting trip ${ req.params.id }`
+        });
+    });
+});
+
+// GET /api/trips/:id/candidates
+// Get all candidates of this trip
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.get('/:id/candidates', authenticate, (req, res) => {
+    knex('candidates')
+        .join('trips', 'trips.id', 'candidates.trip_id')
+        .where({ 
+            trip_id: req.params.id,
+            candidate_status: 'Pending'
+         })
+         .join('users', 'users.id', 'candidates.candidate_id')
+         .select('candidates.id', 'candidates.trip_id', 'candidates.offer',
+            'users.name', 'users.rating')
+        .then((candidates) => {
+            res.json(candidates);
+        });
+});
+
+// DELETE /api/trips/:id/candidates
+// Deletes all candidates of this trip
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.delete('/:id/candidates', authenticate, (req, res) => {
+    knex('candidates')
+        .where({ trip_id: req.params.id })
+        .del()
+        .then((response) => {
+            res.status(201).send(`Deleted data ${response}`)
+        })
+    .catch(() => {
+        res.status(400).json({
+            message: `Error deleting candidates from trip ${ req.params.id }`
+        });
+    });
+});
+
+// DELETE /api/trips/:id/candidates/:candidate_id
+// Deletes just 1 particular candidate from the table
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.delete('/:id/candidates/:candidate_id', authenticate, (req, res) => {
+    knex('candidates')
+        .where({ 
+            trip_id: req.params.id,
+            candidate_id: req.params.candidate_id
+         })
+        .del()
+        .then((response) => {
+            res.status(201).send(`Deleted data ${response}`)
+        })
+    .catch(() => {
+        res.status(400).json({
+            message: `Error deleting candidates from trip ${ req.params.id }`
         });
     });
 });
