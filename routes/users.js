@@ -62,7 +62,7 @@ router.post('/login', (req, res) => {
                 { expiresIn: '168h' }
             );
 
-            res.json({ token });
+            res.json({ token: token, user_type: user.user_type });
         })
         .catch((e) => {
             console.log(e)
