@@ -15,7 +15,7 @@ router.post('/add', (req, res) => {
     const newTrip = {
         ...req.body,
         job_date: new Date(job_date),
-        status: 'IN PROGRESS',
+        status: 'NEW',
         date_posted: new Date()
     };
 
@@ -27,6 +27,17 @@ router.post('/add', (req, res) => {
         .catch(() => {
             res.status(400).send('Failed to add trip');
         });
+});
+
+// GET /api/trips/new
+// Gets trips with status NEW
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.get('/new', authenticate, (req, res) => {
+    knex('trips')
+        .where({ status: 'NEW' })
+        .then((trips) => {
+            res.status(200).json(trips);
+    });
 });
 
 // GET /api/trips/:id
@@ -86,6 +97,25 @@ router.get('/:id/candidates', authenticate, (req, res) => {
             'users.name', 'users.rating')
         .then((candidates) => {
             res.json(candidates);
+        });
+});
+
+// POST /api/trips/:id/candidates
+// Add a new candidate for this trip
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.post('/:id/candidates', authenticate, (req, res) => {
+    // Create the new candidate
+    const newCandidate = {
+        candidate_status: 'Pending',
+        trip_id: req.params.id,
+        candidate_id: req.body.candidate_id,
+        offer: req.body.offer
+    };
+
+    knex('candidates')
+        .insert(newCandidate)
+        .then((candidates) => {
+            res.status(200).json(candidates);
         });
 });
 
