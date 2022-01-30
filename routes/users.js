@@ -89,7 +89,10 @@ router.get('/current', authenticate, (req, res) => {
 // Expects valid JWT authentication to run through the 'authenticate' middleware
 router.get('/:id/trips', authenticate, (req, res) => {
     knex('trips')
-        .where({ sender_id: req.params.id })
+        .where({ 
+            sender_id: req.params.id,
+        })
+        .whereIn('status', ['NEW', 'IN PROGRESS'])
         .orderBy('date_posted', 'desc')
         .then((trips) => {
             res.json(trips);

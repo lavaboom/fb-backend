@@ -42,7 +42,7 @@ router.get('/:id', authenticate, (req, res) => {
 });
 
 // PUT /api/trips/:id
-// Gets information about the trip
+// Update trip with new info
 // Expects valid JWT authentication to run through the 'authenticate' middleware
 router.put('/:id', authenticate, (req, res) => {
     knex('trips')
@@ -87,6 +87,33 @@ router.get('/:id/candidates', authenticate, (req, res) => {
         .then((candidates) => {
             res.json(candidates);
         });
+});
+
+// PUT /api/trips/:id/candidates
+// Update status of the candidate whose id is in the request body
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.put('/:id/candidates', authenticate, (req, res) => {
+    knex('candidates')
+        .where({ 
+            trip_id: req.params.id,
+         })
+        .update({
+            candidate_status: 'Rejected'
+        })
+        .then(() => {
+            knex('candidates')
+            .where({ 
+                trip_id: req.params.id,
+                candidate_id: req.body.candidate_id,
+            })
+            .update({
+                candidate_status: 'Accepted'
+            })
+            .then((number_of_rows_updated) => {
+                res.json(number_of_rows_updated);
+            });
+        });
+    
 });
 
 // DELETE /api/trips/:id/candidates
