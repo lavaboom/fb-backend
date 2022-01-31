@@ -10,13 +10,12 @@ exports.up = function (knex) {
             .inTable('users')
             .onUpdate('CASCADE')
             .onDelete('CASCADE');
-        table
-            .integer('driver_id')
-            .unsigned()
-            .references('id')
-            .inTable('users')
-            .onUpdate('CASCADE')
-            .onDelete('CASCADE');
+        table.integer('driver_id');
+            // .unsigned()
+            // .references('id')
+            // .inTable('users')
+            // .onUpdate('CASCADE')
+            // .onDelete('CASCADE');
         table.string('origin').notNullable();
         table.string('destination').notNullable();
         table.string('note').defaultTo('Leave at door');
