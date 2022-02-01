@@ -112,7 +112,7 @@ router.get('/:id/candidates', authenticate, (req, res) => {
             candidate_status: 'Pending'
          })
          .join('users', 'users.id', 'candidates.candidate_id')
-         .select('candidates.id', 'candidates.trip_id', 'candidates.offer',
+         .select('candidates.id', 'candidates.candidate_id', 'candidates.trip_id', 'candidates.offer',
             'users.name', 'users.rating')
         .then((candidates) => {
             res.json(candidates);

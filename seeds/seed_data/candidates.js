@@ -27,4 +27,11 @@ module.exports = [
         offer: 18,
         candidate_status: 'Pending'
     },
+    {
+        id: 5,
+        trip_id: 2,
+        candidate_id: 6,
+        offer: 75,
+        candidate_status: 'Pending'
+    },
 ];
