@@ -5,6 +5,25 @@ const bcrypt = require('bcryptjs');
 const authenticate = require('../middleware/authenticate');
 const jwt = require('jsonwebtoken');
 
+/* -----------------------------------------------------------------------------
+Application logic
+
+POST   /api/trips/add
+
+GET    /api/trips/new
+
+GET    /api/trips/:id
+PUT    /api/trips/:id
+DELETE /api/trips/:id
+
+GET    /api/trips/:id/candidates
+POST   /api/trips/:id/candidates
+PUT    /api/trips/:id/candidates
+DELETE /api/trips/:id/candidates
+
+DELETE /api/trips/:id/candidates/:candidate_id
+----------------------------------------------------------------------------- */
+
 // POST /api/trips/add
 // Creates a new trip
 // Expected body: { sender_id, origin, destination, 
@@ -120,7 +139,8 @@ router.post('/:id/candidates', authenticate, (req, res) => {
 });
 
 // PUT /api/trips/:id/candidates
-// Update status of the candidate whose id is in the request body
+// Change status of the candidate whose id is in the request body to accepted
+// Reject everybody esle
 // Expects valid JWT authentication to run through the 'authenticate' middleware
 router.put('/:id/candidates', authenticate, (req, res) => {
     knex('candidates')

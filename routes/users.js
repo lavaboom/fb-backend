@@ -5,9 +5,13 @@ const bcrypt = require('bcryptjs');
 const authenticate = require('../middleware/authenticate');
 const jwt = require('jsonwebtoken');
 
+/* -----------------------------------------------------------------------------
+Authentication
+----------------------------------------------------------------------------- */
+
 // POST /api/users/register
 // Creates a new user
-// Expected body: { email, name, password }
+// Expected body: { email, name, user_type, password }
 router.post('/register', (req, res) => {
     const { email, name, user_type, password } = req.body;
 
@@ -20,6 +24,7 @@ router.post('/register', (req, res) => {
     // Create the new user
     const newUser = {
         ...req.body,
+        rating: 5,
         password: hashedPassword
     };
 
@@ -70,7 +75,14 @@ router.post('/login', (req, res) => {
         });
 });
 
-// GET /api/users/trips
+/* -----------------------------------------------------------------------------
+Application logic
+GET /api/users/current
+GET /api/users/:id/trips
+GET /api/users/:id/candidates
+GET /api/users/:id/trips-with-candidates
+----------------------------------------------------------------------------- */
+// GET /api/users/current
 // Gets current user's trips
 // Expects valid JWT authentication to run through the 'authenticate' middleware
 router.get('/current', authenticate, (req, res) => {
@@ -85,7 +97,7 @@ router.get('/current', authenticate, (req, res) => {
 });
 
 // GET /api/users/:id/trips
-// Gets all trips of the currently logged in user
+// Gets all trips (NEW or IN PROGRESS) of the currently logged in user
 // Expects valid JWT authentication to run through the 'authenticate' middleware
 router.get('/:id/trips', authenticate, (req, res) => {
     knex('trips')
@@ -119,7 +131,7 @@ router.get('/:id/candidates', authenticate, (req, res) => {
 });
 
 // GET /api/users/:id/trips-with-candidates
-// Gets all the candidates for active trips for this user - ONLY CANDIDATE IDS
+// Gets list of IDs of trips that have candidates - trip's sender must be current user
 // Expects valid JWT authentication to run through the 'authenticate' middleware
 router.get('/:id/trips-with-candidates', authenticate, (req, res) => {
     knex('candidates')
@@ -128,8 +140,8 @@ router.get('/:id/trips-with-candidates', authenticate, (req, res) => {
             sender_id: req.params.id,
             candidate_status: 'Pending'
         })
-        .then((candidates) => {
-            let filtered = candidates.map(item => item.trip_id);
+        .then((table) => {
+            let filtered = table.map(item => item.trip_id);
             // get unique trip ids only
             res.json([...new Set(filtered)]);
         });
