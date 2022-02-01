@@ -7,10 +7,9 @@ const authenticate = require('../middleware/authenticate');
 Application logic
 
 POST   /api/reviews/
-
 ----------------------------------------------------------------------------- */
 
-// POST /api/reviews/
+// POST /api/reviews/:tripID/:driverID
 // Post a review
 router.post('/:tripID/:driverID', authenticate, (req, res) => {
     // Create the new candidate
@@ -21,10 +20,11 @@ router.post('/:tripID/:driverID', authenticate, (req, res) => {
         score: req.body.score,
         text: req.body.text,
     };
-
     knex('reviews')
         .insert(newReview)
-        .then((result) => {
-            res.status(200).json(result);
+        .then(() => {
+            res.status(200).send('review posted')
         });
 });
+
+module.exports = router;

@@ -77,11 +77,25 @@ router.post('/login', (req, res) => {
 
 /* -----------------------------------------------------------------------------
 Application logic
+// GET /api/users/:userID
 GET /api/users/current
 GET /api/users/:id/trips
 GET /api/users/:id/candidates
 GET /api/users/:id/trips-with-candidates
 ----------------------------------------------------------------------------- */
+// GET /api/users/:userID
+// Gets info about a user
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.get('/:userID/details', authenticate, (req, res) => {
+    knex('users')
+        .where({ id: req.params.userID })
+        .first()
+        .select('name')
+        .then((user) => {
+            res.json(user);
+        });
+});
+
 // GET /api/users/current
 // Gets current user's trips
 // Expects valid JWT authentication to run through the 'authenticate' middleware
