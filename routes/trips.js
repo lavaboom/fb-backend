@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const knex = require('../knexConfig');
-const bcrypt = require('bcryptjs');
 const authenticate = require('../middleware/authenticate');
-const jwt = require('jsonwebtoken');
 
 /* -----------------------------------------------------------------------------
 Application logic
