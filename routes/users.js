@@ -96,6 +96,23 @@ router.get('/current', authenticate, (req, res) => {
         });
 });
 
+// GET /api/users/:id/trips-i-bid-on
+// Gets IDs of trips the current user submitted a bid on
+// Expects valid JWT authentication to run through the 'authenticate' middleware
+router.get('/:id/trips-i-bid-on', authenticate, (req, res) => {
+    knex('candidates')
+        .join('users', 'users.id', 'candidates.candidate_id')
+        .where({ 
+            candidate_id: req.params.id,
+        })
+        .whereIn('candidate_status', ['Pending'])
+        .then((table) => {
+            let filtered = table.map(item => item.trip_id);
+            // get unique trip ids only
+            res.json([...new Set(filtered)]);
+        });
+});
+
 // GET /api/users/:id/trips
 // Gets all trips (NEW or IN PROGRESS) of the currently logged in user
 // Expects valid JWT authentication to run through the 'authenticate' middleware

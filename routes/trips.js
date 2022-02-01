@@ -54,6 +54,7 @@ router.post('/add', (req, res) => {
 router.get('/new', authenticate, (req, res) => {
     knex('trips')
         .where({ status: 'NEW' })
+        .orderBy('date_posted', 'desc')
         .then((trips) => {
             res.status(200).json(trips);
     });
