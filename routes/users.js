@@ -103,9 +103,10 @@ router.get('/current', authenticate, (req, res) => {
     knex('users')
         .where({ email: req.user.email })
         .first()
+        .select('id', 'name', 'rating', 'user_type', 'email')
         .then((user) => {
             // Respond with the user data
-            delete user.password;
+            // delete user.password;
             res.json(user);
         });
 });

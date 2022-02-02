@@ -11,41 +11,41 @@ module.exports = [
     },
     {
         id: 2,
-        name: "Turtle",
+        name: "Niko Bellic",
         rating: 5,
-        email: "turtle@hotmail.ca",
+        email: "Niko@hotmail.ca",
         user_type: "Driver",
         password: bcrypt.hashSync('123', 10)
     },
     {
         id: 3,
-        name: "Leopard",
+        name: "Vincent Kompany",
         rating: 2.6,
-        email: "leopard@live.ca",
+        email: "Vincent@live.ca",
         user_type: "Driver",
         password: bcrypt.hashSync('123', 10)
     },
     {
         id: 4,
-        name: "James",
+        name: "Joe Hart",
         rating: 4.5,
-        email: "james@gmail.com",
+        email: "Joe@gmail.com",
         user_type: "Kitchen",
         password: bcrypt.hashSync('123', 10)
     },
     {
         id: 5,
-        name: "Llama",
+        name: "Mario Balotelli",
         rating: 4.2,
-        email: "llama@hotmail.ca",
+        email: "Mario@hotmail.ca",
         user_type: "Driver",
         password: bcrypt.hashSync('123', 10)
     },
     {
         id: 6,
-        name: "Jane",
+        name: "Edin Dzeko",
         rating: 5,
-        email: "jane@hotmail.ca",
+        email: "Edin@hotmail.ca",
         user_type: "Kitchen",
         password: bcrypt.hashSync('123', 10)
     },
