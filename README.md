@@ -1,18 +1,25 @@
-# Endpoints
+# Food Bunnies - backend
 
-## POST /api/users/register
+## Overview
+This is the backend service for www.FoodBunnies.com - a platform that helps ghost kitchens find delivery drivers.
+- Language: JavaScript
+- Framework: Express JS
+- Database: MySQL & Knex
 
--   Creates a new user.
--   Expected body: { first_name, last_name, phone, address, email, password }
+## Setting up the test environment
+Please have a local MySQL server up and running as well as install all dependencies (`npm install`).
 
-## POST /api/users/login
+### 1. The database
+Rename `.env.example` to `.env` and provide it with appropriate DB connection parameters.
 
--   Generates and responds a JWT for the user to use for future authorization.
--   Expected body: { email, password }
--   Response format: { token: "JWT_TOKEN_HERE" }
+Run the following Knex files in this order:
+- `knex migrate:up create_users.js`
+- `knex migrate:up create_trips.js`
+- `knex migrate:up create_candidates.js`
+- `knex migrate:up create_reviews.js`
 
-## GET /api/users/current
+Next, generate the sample data:
+- `npm run seed`
 
--   Gets information about the currently logged in user.
--   If no valid JWT is provided, this route will respond with 401 Unauthorized.
--   Expected headers: { Authorization: "Bearer JWT_TOKEN_HERE" }
+### 2. Running the test sever
+Simply run `npm start` to have the server listen on port 8080 (default).
