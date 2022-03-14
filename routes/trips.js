@@ -90,8 +90,9 @@ router.delete('/:id', authenticate, (req, res) => {
     knex('trips')
         .where({ id: req.params.id })
         .del()
-        .then((tripID) => {
-            res.status(201).send(`Trip ${tripID} deleted`)
+        .then((number_of_rows_affected) => {
+            console.log(`${number_of_rows_affected} rows deleted`)
+            res.status(201).json(req.params.id)
         })
     .catch(() => {
         res.status(400).json({

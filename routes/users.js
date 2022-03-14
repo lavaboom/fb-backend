@@ -28,14 +28,19 @@ router.post('/register', (req, res) => {
         password: hashedPassword
     };
 
-    knex('users')
-        .insert(newUser)
-        .then(() => {
-            res.status(201).send('Registered successfully');
+    knex('users').insert(newUser).then(() => {
+        knex('users').where({ email }).first().then((user) => {
+            const token = jwt.sign(
+                { id: user.id, email: user.email },
+                process.env.JWT_KEY,
+                { expiresIn: '168h' }
+            );
+            res.json({ token, user });
         })
-        .catch(() => {
-            res.status(400).send('Failed registration');
-        });
+    })
+    .catch(() => {
+        res.status(400).send('Failed registration');
+    });
 });
 
 
@@ -66,8 +71,8 @@ router.post('/login', (req, res) => {
                 process.env.JWT_KEY,
                 { expiresIn: '168h' }
             );
-
-            res.json({ token: token, user_type: user.user_type });
+            
+            res.json({ token, user });
         })
         .catch((e) => {
             console.log(e)
